@@ -1,0 +1,58 @@
+#!/bin/bash
+
+
+#**************************************************************************#
+#*                              GENERAL EXPORTS                           *#
+#**************************************************************************#
+
+# Ignore commands that start with spaces and duplicates.
+
+export HISTCONTROL=ignoreboth
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# Increase the maximum number of lines of history
+# persisted in the history file (default value is 500).
+
+export HISTFILESIZE=10000
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# Increase the maximum number of commands recorded
+# in the command history (default value is 500).
+
+export HISTSIZE=10000
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# Don't add certain commands to the history file.
+
+export HISTIGNORE="h *:clear:exit:pwd:* --help"
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# Write current directory name as terminal title 
+
+PROMPT_COMMAND='echo -ne "\033]0;$(basename ${PWD})\007"'
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# Make new shells get the history lines from all previous
+# shells instead of the default "last window closed" history.
+
+export PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# Use custom `less` colors for `man` pages.
+
+export LESS_TERMCAP_md="$(tput bold 2> /dev/null; tput setaf 2 2> /dev/null)"
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# Use UFF-8 Encoding
+
+export LANG=en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

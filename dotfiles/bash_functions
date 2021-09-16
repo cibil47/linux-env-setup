@@ -1,0 +1,115 @@
+#!/bin/bash
+
+# Make g as a shortcut for grep
+g() {
+    if [ "$#" == "1" ]; then
+
+        if [ "x$1" != "x" ]; then
+            grep -ir --color=auto "$1" ./
+        fi
+
+    else
+        if [ "x$1" != "x" ]; then
+            first_arg=$1
+            shift
+            grep -ir --color=auto "$first_arg" "$@"
+        fi
+
+    fi
+}
+
+h() {
+    if [ "$#" == "0" ]; then
+        history
+    elif [ "$#" == "1" ]; then
+        history | grep -i $1
+    fi
+}
+
+# capture the output of a command and save it in xclip selection
+# To print the primary selecton -> xclip -o -sel p
+# To print the secondary selecton -> xclip -o -sel s
+# To print the clipboard selecton -> xclip -o -sel c
+s() {
+    echo "clipboard selecton ->" `xclip -o -sel c`
+    echo "primary selecton ->" `xclip -o -sel p`
+    echo "secondary selecton ->" `xclip -o -sel s`
+}
+
+cap() { 
+    tee /tmp/capture.out
+    cat /tmp/capture.out | xargs  -i echo -n {} | xclip -sel clip
+}
+
+pd() {
+    if [ "$#" == "1" ]; then
+        if [ -n "$1" ]; then
+            pushd "$1" 1> /dev/null
+        fi
+    elif [ "$#" == "0" ]; then
+        pushd ~/ 1> /dev/null
+    fi
+}
+
+# Get the man page for bash builtins 
+bashman() {
+    man bash | less -p "^       $1 "
+}
+
+getme() {
+    if [ "$#" == "1" ]; then
+        if [ -n "$1" ]; then
+            input=$(readlink -f $1)
+
+            if [ -d $1 ]; then
+                search_dir=$1
+            else
+                search_dir=$(dirname $1)
+            fi
+
+            git_top_dir=$(git -C $search_dir rev-parse --show-toplevel 2>/dev/null)
+            res=$?
+            if [ $res -eq 0 ]; then
+                url=$(git -C $search_dir remote get-url --all origin 2>/dev/null)
+                # Absolute path of given file/dir - Absolute path of git root = remaining files/dir
+                file_diff=${input#"$git_top_dir"}
+                echo $url | grep "http" >/dev/null
+                if [ $? -eq 0 ]; then
+                    echo $url | grep \.git >/dev/null
+                    if [ $? -eq 0 ]; then
+                        url=$(echo $url | sed "s#.git##")
+                    fi
+                    repo=$(echo $url | rev | cut -d "/" -f1 | rev)
+                    url=$url"/"
+                    file_diff_len=$(echo $file_diff | wc -c)
+                    if [ $file_diff_len -gt 3 ]; then
+                        url=$url$file_diff
+                    fi
+                    url=$(echo $url | sed "s#/scm/#/projects/#")
+                    git -C $search_dir branch -a | grep master$ 1>/dev/null
+                    master=$?
+                    if [ $master -eq 0 ]; then
+                        BRANCH="master"
+                    else
+                        BRANCH=""
+                    fi
+
+                    if [ -n $BRANCH ]; then
+                        branch_extension="?at=refs%2Fheads%2F$BRANCH"
+                        url=$url$branch_extension
+                    fi
+                    url=$(echo $url | sed "s#/$repo/#/repos/$repo/browse/#")
+                    url=$(echo $url | sed "s#/browse/./#/browse/#")
+                    url=$(echo $url | sed "s#/browse//#/browse/#")
+
+                    echo $url
+
+                else
+                    echo "Repo is not https. need to handle it"
+                fi
+            else
+                echo "Not a git repo : $1"
+            fi
+        fi
+    fi
+}

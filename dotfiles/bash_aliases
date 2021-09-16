@@ -1,0 +1,29 @@
+#!/bin/bash
+
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+alias ......="cd ../../../../.."
+alias .......="cd ../../../../../.."
+alias ........="cd ../../../../../../.."
+alias cd..="cd .."
+
+alias p="popd"
+alias d="dirs"
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+alias o="nautilus ./"
+alias sd="sudo shutdown now"
+alias f="find ./ -name "
+alias r="readlink -f "
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+alias dirs="dirs -v"
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
