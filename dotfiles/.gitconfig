@@ -1,0 +1,23 @@
+[user]
+	name = Cibil
+	email = cibil51@gmail.com
+[color]
+	ui = auto
+
+[difftool "vscode"]
+  cmd = code --wait --diff $LOCAL $REMOTE
+
+[url "https://github.com/"]
+	insteadOf = git@github.com:
+[url "https://github.com/"]
+	insteadOf = ssh://git@github.com/
+[url "https://github.com/"]
+	insteadOf = git://github.com/
+[core]
+	editor = vim
+	# pager = less -x4
+
+[alias]
+	rh                   = reset HEAD^
+	fetch-pr             = "!f(){ git fetch origin refs/pull-requests/$1/from:$2; };f"
+	push-branch          = "!f(){ git push origin HEAD:$1 -f; };f"
