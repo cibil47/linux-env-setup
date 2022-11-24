@@ -14,14 +14,14 @@ export HISTCONTROL=ignoreboth
 # Increase the maximum number of lines of history
 # persisted in the history file (default value is 500).
 
-export HISTFILESIZE=10000
+export HISTFILESIZE=20000
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 # Increase the maximum number of commands recorded
 # in the command history (default value is 500).
 
-export HISTSIZE=10000
+export HISTSIZE=20000
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -47,6 +47,11 @@ export PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
 # Use custom `less` colors for `man` pages.
 
 export LESS_TERMCAP_md="$(tput bold 2> /dev/null; tput setaf 2 2> /dev/null)"
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# When the shell exits, append to the history file instead of overwriting it
+shopt -s histappend
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
