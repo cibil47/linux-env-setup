@@ -22,7 +22,7 @@ h() {
     if [ "$#" == "0" ]; then
         history
     elif [ "$#" == "1" ]; then
-        history | grep -i $1
+        history | grep -i "$1"
     fi
 }
 
@@ -105,7 +105,27 @@ getme() {
                     echo $url
 
                 else
-                    echo "Repo is not https. need to handle it"
+                    echo $url | grep "ssh:" >/dev/null
+                    if [ $? -eq 0 ]; then
+                        project=`echo "$url" | sed 's#ssh://git@#https://#g; s#:7999#/projects#g' | rev | cut -d '/' -f2- | rev`
+                        repo=`echo "$url" | sed 's#ssh://git@#https://#g; s#:7999#/projects#g' | rev | cut -d '/' -f1 | rev`
+                        url=$(echo "$project/repos/$repo/browse$file_diff")
+
+                        git -C $search_dir branch -a | grep master$ 1>/dev/null
+                        master=$?
+                        if [ $master -eq 0 ]; then
+                            BRANCH="master"
+                        else
+                            BRANCH=""
+                        fi
+
+                        if [ -n $BRANCH ]; then
+                            branch_extension="?at=refs%2Fheads%2F$BRANCH"
+                            url=$url$branch_extension
+                        fi
+                        url=$(echo $url | sed 's/.git//g')
+                        echo "$url"
+                    fi
                 fi
             else
                 echo "Not a git repo : $1"
