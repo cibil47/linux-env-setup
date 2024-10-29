@@ -4,9 +4,6 @@
 [color]
 	ui = auto
 
-[difftool "vscode"]
-  cmd = code --wait --diff $LOCAL $REMOTE
-
 [url "https://github.com/"]
 	insteadOf = git@github.com:
 [url "https://github.com/"]
@@ -18,6 +15,17 @@
 	# pager = less -x4
 
 [alias]
-	rh                   = reset HEAD^
-	fetch-pr             = "!f(){ git fetch origin refs/pull-requests/$1/from:$2; };f"
-	push-branch          = "!f(){ git push origin HEAD:$1 -f; };f"
+	rh = reset HEAD^
+	push-branch = "!f(){ git push origin HEAD:$1 -f; };f"
+	r = "!f(){ git rebase -i HEAD~$1; };f"
+	rb = "!f(){ git rebase -i $1; };f"
+	f = fetch origin
+	c = "!f(){ git checkout $1; };f"
+	s = status
+	d = diff
+	l = log
+	sh = show
+	can = commit -a --amend --no-edit
+[pretty]
+	fixes = Fixes: %h (\"%s\")
+	list = * %s
