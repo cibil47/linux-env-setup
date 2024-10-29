@@ -22,7 +22,7 @@ fi
 
 # Cibil customization
 
-dot_files_dir="/home/cibil/dotfiles/"
+dot_files_dir="/home/cibil/git/linux-env-setup/bash/"
 
 if [ -d $dot_files_dir ]; then
 
